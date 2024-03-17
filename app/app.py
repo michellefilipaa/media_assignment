@@ -1,6 +1,12 @@
+import sys
+import os
+
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.append(parent_dir)
+
 import streamlit as st
 import pandas as pd
-import st_template as t
+import recommendation_page as rp
 from values.ChildAppropriatenessScore import ChildAppropriatenessScore
 
 class app: 
@@ -64,6 +70,11 @@ class app:
             st.markdown("insert transparency explanation") # TODO
             age = st.slider('Select age of child', min_value=4, max_value=17, value=5)
             st.session_state.age = age
+        
+        st.markdown("**Do you have a genre in mind?**")
+        
+        st.session_state.genre = st.radio("Genres:", ["Any","CBBC", "Comedy", "Documentary", "Entertainment", "Films", "History", "Science", "Signed", "Sports"])
+        # TODO: implement filtering based on selected genre
 
         if st.button("Next"):
             if children:
@@ -96,8 +107,7 @@ class app:
     def recommendations():
         st.title("Top 10 recommendations")
         df = pd.read_csv('../recommendations/ages12_14.csv')
-
-        t.recommendations(df)
+        rp.recommendations(df, '18')
 
 # Check if session_state.page exists and set it to default value if not
 if "page" not in st.session_state:
@@ -120,5 +130,5 @@ elif st.session_state.page == "recommendations":
     app.recommendations()
 elif st.session_state.page == "child_recommendations":
     age = st.session_state.age
-    cas = ChildAppropriatenessScore(age)
-    cas.child_recommendations()
+    genre = st.session_state.genre
+    cas = ChildAppropriatenessScore(age, genre)

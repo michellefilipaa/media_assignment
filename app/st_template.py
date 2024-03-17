@@ -1,23 +1,30 @@
-# code adapted from lab1
 import streamlit as st
-from random import random
 
-def tile_item(column, item):
-  with column:
-    st.image(item['image'], use_column_width='always')
-    st.caption(item['title'])
+def recommendations(df, cas_id):
+    st.title("Recommendations")
+    cas_string = 'cas' + cas_id
+    for i, row in df.iterrows():
+        st.write("---") 
 
-def recommendations(df):
-  # check the number of items
-  nbr_items = df.shape[0]
+        cover, title = st.columns(2)  
+        info, description = st.columns(2) 
 
-  if nbr_items != 0:    
+        # Display movie cover
+        with cover:
+            st.image(row['image'], caption="Cover", use_column_width=True)
 
-    # create columns with the corresponding number of items
-    columns = st.columns(nbr_items)
+        # Display movie title
+        with title:
+            st.title(row['title'])
 
-    # convert df rows to dict lists
-    items = df.to_dict(orient='records')
+        # Display movie information
+        with info:
+            st.markdown(f"**Category:** {row['category']}")
+            st.markdown(f"**Tags:** {row['tags']}")
+            st.markdown(f"**Age Rating:** {row['age_rating']}")
+            st.markdown(f"**Child Appropriateness Score:** {round(row[cas_string], 3)}")
 
-    # apply tile_item to each column-item tuple (created with python 'zip')
-    any(tile_item(x[0], x[1]) for x in zip(columns, items))
+        # Display movie description
+        with description:
+            st.markdown("**Synopsis:**")
+            st.markdown(row['synopsis_small'])
