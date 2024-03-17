@@ -5,10 +5,6 @@ import st_template as t
 
 class ChildAppropriatenessScore:
     def __init__(self, age):
-        # self.st = session
-        # read the data
-        # TODO: make a dataset with content suitable for children only
-        self.df = pd.read_csv('../data/recommendation_csv/ages4_8.csv') 
         self.age = age
 
     def child_recommendations(self):
