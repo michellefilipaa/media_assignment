@@ -1,6 +1,3 @@
-import sys
-sys.path.append('/Users/michelleuni/Documents/UU/Media/Assignment2')
-
 import streamlit as st
 import pandas as pd
 import st_template as t
@@ -67,8 +64,6 @@ class app:
             st.markdown("insert transparency explanation") # TODO
             age = st.slider('Select age of child', min_value=4, max_value=17, value=5)
             st.session_state.age = age
-            st.markdown(type(age))
-            st.markdown(type(st.session_state.age))
 
         if st.button("Next"):
             if children:
