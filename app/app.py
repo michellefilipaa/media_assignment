@@ -42,72 +42,72 @@ class app:
                 st.markdown(profile_description[profile])
 
     @staticmethod
-    def asha():
-        st.title("Asha's Profile")
+    def generate_profile(person, checkboxes):
+        st.title(person)
 
+        # choose a genre
+        st.markdown("**Do you have a genre in mind?**")
+        st.session_state.genre = st.radio("Genres:", ["Any","CBBC", "Comedy", "Documentary", "Entertainment", "Films", "History", "Science", "Signed", "Sports"])
+
+        # Value = Positivity
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
-
-        # this is for the transparency value
-        st.markdown("This is used to ...*finish explanation*...") #TODO
-
         positivity = st.slider('', min_value=0, max_value=10, value=5)
 
+        # Value = Collaboration
         st.markdown("**Who are you watching with?**")
 
         # this is for the transparency value
         st.markdown("This is used to make recommendations based on all your interests!") #TODO
+        for checkbox in checkboxes:
+            st.checkbox(checkbox)
 
-        no_one = st.checkbox('No one')
-        michelle = st.checkbox('Michelle')
-        sine = st.checkbox('Sine')
-        zane = st.checkbox('Zane')
-        zang = st.checkbox('Zang')
-        children = st.checkbox('Children')
-
-        if children:
+        # Value = (Restricted) Access
+        children = checkboxes[5]
+        if children: 
             st.markdown("**Age of Children**")
             st.markdown("insert transparency explanation") # TODO
             age = st.slider('Select age of child', min_value=4, max_value=17, value=5)
             st.session_state.age = age
         
-        st.markdown("**Do you have a genre in mind?**")
-        
-        st.session_state.genre = st.radio("Genres:", ["Any","CBBC", "Comedy", "Documentary", "Entertainment", "Films", "History", "Science", "Signed", "Sports"])
-        # TODO: implement filtering based on selected genre
-
         if st.button("Next"):
             if children:
                 st.session_state.page = "child_recommendations"
             else:
                 st.session_state.page = "recommendations"
 
+    @staticmethod
+    def asha():
+        checkboxes = ['No one','Michelle', 'Sine', 'Zane', 'Zang', 'Children']
+        app.generate_profile("Asha's Profile", checkboxes)
 
     @staticmethod
     def michelle():
-        st.title("Michelle's Profile")
-        pass
+        checkboxes = ['No one','Asha', 'Sine', 'Zane', 'Zang', 'Children']
+        app.generate_profile("Michelle's Profile", checkboxes)
 
     @staticmethod
     def sine():
-        st.title("Sine's Profile")
-        pass
-
+        checkboxes = ['No one','Asha', 'Michelle', 'Zane', 'Zang', 'Children']
+        app.generate_profile("Sine's Profile", checkboxes)
+    
     @staticmethod
     def zane():
-        st.title("Zane's Profile")
-        pass
+        checkboxes = ['No one','Asha', 'Michelle', 'Sine', 'Zang', 'Children']
+        app.generate_profile("Zane's Profile", checkboxes)
 
     @staticmethod
     def zang():
-        st.title("Zang's Profile")
-        pass
+        checkboxes = ['No one','Asha','Michelle', 'Sine', 'Zane', 'Children']
+        app.generate_profile("Zang's Profile", checkboxes)
 
     @staticmethod
     def recommendations():
         st.title("Top 10 recommendations")
         df = pd.read_csv('../recommendations/ages12_14.csv')
         rp.recommendations(df, '18')
+
+streamlit_app = app()
 
 # Check if session_state.page exists and set it to default value if not
 if "page" not in st.session_state:
