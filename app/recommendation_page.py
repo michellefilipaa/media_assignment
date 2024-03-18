@@ -1,12 +1,13 @@
 import streamlit as st
+from values.ChildAppropriatenessScore import ChildAppropriatenessScore
+import time
 
 def recommendations(df, cas_id):
-    
     cas_string = 'cas' + cas_id
 
     if len(df) == 0:
         st.title("No results found")
-        st.markdown("Unforunately there is no appropriate content available for your search criteria.")
+        st.markdown("Unfortunately there is no appropriate content available for your search criteria.")
         st.markdown("Please try another search.")
 
         if st.button("Back to home"):
@@ -37,6 +38,17 @@ def recommendations(df, cas_id):
             with description:
                 st.markdown("**Synopsis**")
                 st.markdown(col['description'])
-            
-            if st.button("Back to home"):
-                st.session_state.page = "first_page"
+        
+        st.markdown("---")
+        st.markdown("**Are you happy with the recommendations?**")
+        
+        st.markdown("If not,")
+
+        if st.button("Generate new recommendations", key="gen"+ str(st.session_state.key)):
+            if cas_string != 'cas18':
+                age = st.session_state.age
+                genre = st.session_state.genre
+                cas = ChildAppropriatenessScore(age, genre, True, df)
+
+        if st.button("Back to home", key= "back"+ str(st.session_state.key)):
+            st.session_state.page = "first_page"

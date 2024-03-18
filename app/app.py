@@ -61,9 +61,9 @@ class app:
         st.markdown("This is used to make recommendations based on all your interests!") #TODO
         for checkbox in checkboxes:
             st.checkbox(checkbox)
+        children = st.checkbox('Children')
 
         # Value = (Restricted) Access
-        children = checkboxes[5]
         if children: 
             st.markdown("**Age of Children**")
             st.markdown("insert transparency explanation") # TODO
@@ -78,27 +78,27 @@ class app:
 
     @staticmethod
     def asha():
-        checkboxes = ['No one','Michelle', 'Sine', 'Zane', 'Zang', 'Children']
+        checkboxes = ['No one','Michelle', 'Sine', 'Zane', 'Zang']
         app.generate_profile("Asha's Profile", checkboxes)
 
     @staticmethod
     def michelle():
-        checkboxes = ['No one','Asha', 'Sine', 'Zane', 'Zang', 'Children']
+        checkboxes = ['No one','Asha', 'Sine', 'Zane', 'Zang']
         app.generate_profile("Michelle's Profile", checkboxes)
 
     @staticmethod
     def sine():
-        checkboxes = ['No one','Asha', 'Michelle', 'Zane', 'Zang', 'Children']
+        checkboxes = ['No one','Asha', 'Michelle', 'Zane', 'Zang']
         app.generate_profile("Sine's Profile", checkboxes)
     
     @staticmethod
     def zane():
-        checkboxes = ['No one','Asha', 'Michelle', 'Sine', 'Zang', 'Children']
+        checkboxes = ['No one','Asha', 'Michelle', 'Sine', 'Zang']
         app.generate_profile("Zane's Profile", checkboxes)
 
     @staticmethod
     def zang():
-        checkboxes = ['No one','Asha','Michelle', 'Sine', 'Zane', 'Children']
+        checkboxes = ['No one','Asha','Michelle', 'Sine', 'Zane']
         app.generate_profile("Zang's Profile", checkboxes)
 
     @staticmethod
@@ -127,8 +127,10 @@ elif st.session_state.page == "zane":
 elif st.session_state.page == "zang":
     app.zang()
 elif st.session_state.page == "recommendations":
+    st.session_state.key = 0
     app.recommendations()
 elif st.session_state.page == "child_recommendations":
+    st.session_state.key = 0
     age = st.session_state.age
     genre = st.session_state.genre
-    cas = ChildAppropriatenessScore(age, genre)
+    cas = ChildAppropriatenessScore(age, genre, False, None)
