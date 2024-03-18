@@ -1,3 +1,7 @@
+import sys
+import os
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.append(parent_dir)
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -21,13 +25,12 @@ class ChildAppropriatenessScore:
         
         self.cas_id = self.get_cas_id(age)
 
-        if regenerate and not again_df.empty:
-            self.generate_new_recommendations(again_df)
+
+        df = self.get_dataframe_for_cas()
+        if genre == 'Any':
+            self.make_recommendations(df)
         else:
-            if genre == 'Any':
-                self.make_recommendations(self.get_dataframe_for_cas())
-            else:
-                self.filter_data(self.age_range(), genre)
+            self.filter_data(df, genre)
 
     def get_dataframe_for_cas(self):
         csv_path = self.cas_to_csv_mapping.get(self.cas_id)
@@ -48,8 +51,3 @@ class ChildAppropriatenessScore:
     
     def make_recommendations(self, df):
         rp.recommendations(df, self.cas_id)
-    
-    def generate_new_recommendations(self, df):
-        new_df = df.sample(n=10)
-        st.session_state.key += 1
-        rp.recommendations(new_df, self.cas_id) 

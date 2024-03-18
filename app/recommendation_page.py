@@ -1,5 +1,4 @@
 import streamlit as st
-from values.ChildAppropriatenessScore import ChildAppropriatenessScore
 import time
 
 def recommendations(df, cas_id):
@@ -40,15 +39,25 @@ def recommendations(df, cas_id):
                 st.markdown(col['description'])
         
         st.markdown("---")
-        st.markdown("**Are you happy with the recommendations?**")
+        # This is done because sometimes (on the child's profile), there are less than 10 movies in a genre.
+        # In this scenario, more recommendations would not be able to be made.
+        if len(df) > 10:
+            st.markdown("**Are you happy with the recommendations?**")
         
-        st.markdown("If not,")
+            st.markdown("If not,")
 
-        if st.button("Generate new recommendations", key="gen"+ str(st.session_state.key)):
-            if cas_string != 'cas18':
-                age = st.session_state.age
-                genre = st.session_state.genre
-                cas = ChildAppropriatenessScore(age, genre, True, df)
+            if st.button("Generate new recommendations", key="gen"+ str(st.session_state.key)):
+                if cas_string != 'cas18':
+                    age = st.session_state.age
+                    genre = st.session_state.genre
+                    generate_new_recommendations(df, cas_id)
 
         if st.button("Back to home", key= "back"+ str(st.session_state.key)):
             st.session_state.page = "first_page"
+    
+    def generate_new_recommendations(df, cas_id):
+        new_df = df.sample(n=10)
+        st.session_state.key += 1
+        recommendations(new_df, cas_id) 
+
+

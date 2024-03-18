@@ -1,12 +1,10 @@
 import sys
 import os
-
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(parent_dir)
-
-import streamlit as st
+import base64
 import pandas as pd
-import recommendation_page as rp
+import streamlit as st
 from values.ChildAppropriatenessScore import ChildAppropriatenessScore
 
 class app: 
@@ -25,7 +23,7 @@ class app:
 
         profile_description = {
             "Asha" : "insert description of profile/user character",
-            "Michelle" : "insert description of profile/user character",
+            "Michelle" : "This is a child profile. Only child appropriate content is recommended here.",
             "Sine" : "insert description of profile/user character",
             "Zane" : "insert description of profile/user character",
             "Zang" : "insert description of profile/user character"
@@ -56,8 +54,9 @@ class app:
 
         # Value = Collaboration
         st.markdown("**Who are you watching with?**")
+        st.markdown("Leave empty if you're watching alone.")
 
-        # this is for the transparency value
+        # Value = Transparency
         st.markdown("This is used to make recommendations based on all your interests!") #TODO
         for checkbox in checkboxes:
             st.checkbox(checkbox)
@@ -77,28 +76,87 @@ class app:
                 st.session_state.page = "recommendations"
 
     @staticmethod
+    def generate_child_profile(person, checkboxes):
+        st.title(person)
+
+        # Value = (Restricted) Access
+        st.markdown("**How old are you?**")
+        st.markdown("insert transparency explanation") # TODO
+        age = st.slider('Select age:', min_value=4, max_value=17, value=5)
+        st.session_state.age = age
+
+        images = {
+            "CBBC" : "images/kid_profile/cbbc.png",
+            "Comedy" : "images/kid_profile/comedy.png",
+            "Documentaries" : "images/kid_profile/documentaries.png",
+            "Entertainment" : "images/kid_profile/entertainment.png",
+            "Films" : "images/kid_profile/films.png",
+            "From the Archives" : "images/kid_profile/archives.png",
+            "Science & Nature" : "images/kid_profile/nature.png",
+            "Sports" : "images/kid_profile/sports.png",
+            "Any" : "images/kid_profile/any.png"
+        }
+        
+        # choose a genre
+        #st.session_state.genre = "Any"
+        st.markdown("**Do you have a genre in mind?**")
+        cols = st.columns(3)
+
+        for idx, (genre, img_path) in enumerate(images.items()):
+            row = idx // 3  # Calculate row index
+            col = idx % 3   # Calculate column index
+            if age < 9 and genre in ["From the Archives", "Comedy"]:
+                continue  # Skip these genres if age < 9
+            elif age < 12 and genre == "Comedy":
+                continue  # Skip "comedy" genre if age < 12
+            with cols[col]:
+                st.image(img_path, use_column_width=True)
+                if st.button(f"{genre}"):
+                    st.session_state.genre = genre
+        
+        st.markdown("**Selected Genre:** " + st.session_state.genre)
+
+
+        # Value = Positivity
+        st.markdown("**Positivity Level:**")
+        st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
+        positivity = st.slider('', min_value=0, max_value=10, value=5)
+
+        # Value = Collaboration
+        st.markdown("**Who are you watching with?**")
+        st.markdown("Leave empty if you're watching alone.")
+
+        # Value = Transparency
+        st.markdown("This is used to make recommendations based on all your interests!") #TODO
+        for checkbox in checkboxes:
+            st.checkbox(checkbox)            
+        
+        if st.button("Next"):
+            st.session_state.page = "child_recommendations"
+
+    @staticmethod
     def asha():
-        checkboxes = ['No one','Michelle', 'Sine', 'Zane', 'Zang']
+        checkboxes = ['Michelle', 'Sine', 'Zane', 'Zang']
         app.generate_profile("Asha's Profile", checkboxes)
 
     @staticmethod
     def michelle():
-        checkboxes = ['No one','Asha', 'Sine', 'Zane', 'Zang']
-        app.generate_profile("Michelle's Profile", checkboxes)
+        checkboxes = ['Asha', 'Sine', 'Zane', 'Zang']
+        app.generate_child_profile("Michelle's Profile", checkboxes)
 
     @staticmethod
     def sine():
-        checkboxes = ['No one','Asha', 'Michelle', 'Zane', 'Zang']
+        checkboxes = ['Asha', 'Michelle', 'Zane', 'Zang']
         app.generate_profile("Sine's Profile", checkboxes)
     
     @staticmethod
     def zane():
-        checkboxes = ['No one','Asha', 'Michelle', 'Sine', 'Zang']
+        checkboxes = ['Asha', 'Michelle', 'Sine', 'Zang']
         app.generate_profile("Zane's Profile", checkboxes)
 
     @staticmethod
     def zang():
-        checkboxes = ['No one','Asha','Michelle', 'Sine', 'Zane']
+        checkboxes = ['Asha','Michelle', 'Sine', 'Zane']
         app.generate_profile("Zang's Profile", checkboxes)
 
     @staticmethod
