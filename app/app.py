@@ -6,6 +6,8 @@ import base64
 import pandas as pd
 import streamlit as st
 from values.ChildAppropriatenessScore import ChildAppropriatenessScore
+from values.recommender import recommender as r
+
 
 class app: 
 
@@ -66,8 +68,7 @@ class app:
         if children: 
             st.markdown("**Age of Children**")
             st.markdown("insert transparency explanation") # TODO
-            age = st.slider('Select age of child', min_value=4, max_value=17, value=5)
-            st.session_state.age = age
+            st.session_state.age = st.slider('Select age of child', min_value=4, max_value=17, value=5)
         
         if st.button("Next"):
             if children:
@@ -159,12 +160,6 @@ class app:
         checkboxes = ['Asha','Michelle', 'Sine', 'Zane']
         app.generate_profile("Zang's Profile", checkboxes)
 
-    @staticmethod
-    def recommendations():
-        st.title("Top 10 recommendations")
-        df = pd.read_csv('../recommendations/ages12_14.csv')
-        rp.recommendations(df, '18')
-
 streamlit_app = app()
 
 # Check if session_state.page exists and set it to default value if not
@@ -186,7 +181,7 @@ elif st.session_state.page == "zang":
     app.zang()
 elif st.session_state.page == "recommendations":
     st.session_state.key = 0
-    app.recommendations()
+    r.generate_recommendations()
 elif st.session_state.page == "child_recommendations":
     st.session_state.key = 0
     age = st.session_state.age
