@@ -1,6 +1,13 @@
 import streamlit as st
 import time
 
+st.session_state.generate_new = False
+
+def generate_new_recommendations(df, cas_id):
+        new_df = df.sample(n=10)
+        st.session_state.key += 1
+        recommendations(new_df, cas_id) 
+
 def recommendations(df, cas_id):
     cas_string = 'cas' + cas_id
 
@@ -9,7 +16,7 @@ def recommendations(df, cas_id):
         st.markdown("Unfortunately there is no appropriate content available for your search criteria.")
         st.markdown("Please try another search.")
 
-        if st.button("Back to home"):
+        if st.button("Back to home", key='back2_' + str(st.session_state.key)):
             st.session_state.page = "first_page"
     
     else:
@@ -39,6 +46,9 @@ def recommendations(df, cas_id):
                 st.markdown(col['description'])
         
         st.markdown("---")
+
+        if st.button("Back to home", key= "back"+ str(st.session_state.key)):
+            st.session_state.page = "first_page"
         # This is done because sometimes (on the child's profile), there are less than 10 movies in a genre.
         # In this scenario, more recommendations would not be able to be made.
         if len(df) > 10:
@@ -50,14 +60,7 @@ def recommendations(df, cas_id):
                 if cas_string != 'cas18':
                     age = st.session_state.age
                     genre = st.session_state.genre
+                    st.session_state.generate_new = True
                     generate_new_recommendations(df, cas_id)
-
-        if st.button("Back to home", key= "back"+ str(st.session_state.key)):
-            st.session_state.page = "first_page"
-    
-    def generate_new_recommendations(df, cas_id):
-        new_df = df.sample(n=10)
-        st.session_state.key += 1
-        recommendations(new_df, cas_id) 
 
 

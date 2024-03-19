@@ -161,7 +161,8 @@ class app:
         app.generate_profile("Zang's Profile", checkboxes)
 
 streamlit_app = app()
-
+st.session_state.genre = "Any"
+st.session_state.key = 0
 # Check if session_state.page exists and set it to default value if not
 if "page" not in st.session_state:
     st.session_state.page = "first_page"
@@ -180,10 +181,8 @@ elif st.session_state.page == "zane":
 elif st.session_state.page == "zang":
     app.zang()
 elif st.session_state.page == "recommendations":
-    st.session_state.key = 0
     r.generate_recommendations()
 elif st.session_state.page == "child_recommendations":
-    st.session_state.key = 0
     age = st.session_state.age
     genre = st.session_state.genre
     cas = ChildAppropriatenessScore(age, genre, False, None)
