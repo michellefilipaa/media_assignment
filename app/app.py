@@ -37,14 +37,43 @@ class app:
                 st.image(img_path, use_column_width=True)
         
                 if st.button(f"{profile}"):
-                    st.session_state.page = profile.lower()
+                    st.session_state.person = profile
+                    st.session_state.page = "user_home"
 
                 st.markdown(profile_description[profile])
 
     @staticmethod
-    def generate_profile(person, checkboxes):
-        st.title(person)
+    def user_home(person):
+        st.title(person + "'s Profile")
+        if st.button("New Search"):
+            st.session_state.page = "search"
 
+        path = '../data/ratings/' + person.lower() + '_ratings.csv'
+        user_ratings_csv = pd.read_csv(path)
+        most_recent = user_ratings_csv.sort_values(by='rating')
+        favorites = user_ratings_csv.sort_values(by='date_watched')
+
+        st.markdown("**Most recently watched:**")
+        cols = st.columns(2)
+        for i, row in most_recent.head(2).iterrows():
+            movie_id = row['showId'] 
+            movie_data = st.session_state.all_data.loc[st.session_state.all_data.index == movie_id]
+            if not movie_data.empty:
+                cols[i % 2].image(movie_data['image'].values[0], caption=movie_data['title'].values[0], width=250)
+                
+        st.markdown("**Highest rated:**")
+        cols2 = st.columns(2)
+        for i, row in user_ratings_csv.head(2).iterrows():
+            movie_id = row['showId'] 
+            movie_data = st.session_state.all_data.loc[st.session_state.all_data.index == movie_id]
+            if not movie_data.empty:
+                cols2[i % 2].image(movie_data['image'].values[0], caption=movie_data['title'].values[0], width=250)
+        
+        if st.button("Back"):
+            st.session_state.page = "first_page"
+
+    @staticmethod
+    def search_profile(checkboxes):
         # choose a genre
         st.markdown("**Do you have a genre in mind?**")
         st.session_state.genre = st.radio("Genres:", ["Any","CBBC", "Comedy", "Documentary", "Entertainment", "Films", "History", "Science", "Signed", "Sports"])
@@ -77,9 +106,7 @@ class app:
                 st.session_state.page = "recommendations"
 
     @staticmethod
-    def generate_child_profile(person, checkboxes):
-        st.title(person)
-
+    def search_child_profile(checkboxes):
         # Value = (Restricted) Access
         st.markdown("**How old are you?**")
         st.markdown("insert transparency explanation") # TODO
@@ -137,52 +164,72 @@ class app:
 
     @staticmethod
     def asha():
-        checkboxes = ['Michelle', 'Sine', 'Zane', 'Zang']
-        app.generate_profile("Asha's Profile", checkboxes)
+        app.user_home('Asha')
 
     @staticmethod
     def michelle():
-        checkboxes = ['Asha', 'Sine', 'Zane', 'Zang']
-        app.generate_child_profile("Michelle's Profile", checkboxes)
+        app.user_home('Michelle')
 
     @staticmethod
     def sine():
-        checkboxes = ['Asha', 'Michelle', 'Zane', 'Zang']
-        app.generate_profile("Sine's Profile", checkboxes)
+        app.user_home('Sine')
     
     @staticmethod
     def zane():
-        checkboxes = ['Asha', 'Michelle', 'Sine', 'Zang']
-        app.generate_profile("Zane's Profile", checkboxes)
+        app.user_home('Zane')
 
     @staticmethod
     def zang():
-        checkboxes = ['Asha','Michelle', 'Sine', 'Zane']
-        app.generate_profile("Zang's Profile", checkboxes)
+        app.user_home('Zang')
+    
+    @staticmethod
+    def handle_child_recommendations():
+        st.title("Child Recommendations")
+        age = st.session_state.age
+        genre = st.session_state.genre
+        cas = ChildAppropriatenessScore(age, genre, False, None)
+    
+    @staticmethod
+    def handle_search():
+        st.title(st.session_state.person + "'s Search Profile")
+        st.session_state.genre = "Any"
+
+        person = st.session_state.person
+        if person is None:
+            st.error("No user selected.")
+            return
+
+        checkboxes = ['Asha', 'Michelle', 'Sine', 'Zane', 'Zang']
+        if person == 'Asha':
+            app.search_profile(checkboxes)
+        elif person == 'Michelle':
+            checkboxes.remove('Michelle')
+            app.search_child_profile(checkboxes)
+        elif person == 'Sine':
+            checkboxes.remove('Sine')
+            app.search_profile(checkboxes)
+        elif person == 'Zane':
+            checkboxes.remove('Zane')
+            app.search_profile(checkboxes)
+        elif person == 'Zang':
+            checkboxes.remove('Zang')
+            app.search_profile(checkboxes)
 
 streamlit_app = app()
 st.session_state.genre = "Any"
 st.session_state.key = 0
-# Check if session_state.page exists and set it to default value if not
+st.session_state.all_data = pd.read_csv('../data/all_data.csv')
+
 if "page" not in st.session_state:
     st.session_state.page = "first_page"
 
-# Display content based on the session_state.page value
 if st.session_state.page == "first_page":
     app.home_page()
-elif st.session_state.page == "asha":
-    app.asha()
-elif st.session_state.page == "michelle":
-    app.michelle()
-elif st.session_state.page == "sine":
-    app.sine()
-elif st.session_state.page == "zane":
-    app.zane()
-elif st.session_state.page == "zang":
-    app.zang()
+elif st.session_state.page in "user_home":
+    app.user_home(st.session_state.person)
+elif st.session_state.page == "search":
+    app.handle_search()
 elif st.session_state.page == "recommendations":
     r.generate_recommendations()
 elif st.session_state.page == "child_recommendations":
-    age = st.session_state.age
-    genre = st.session_state.genre
-    cas = ChildAppropriatenessScore(age, genre, False, None)
+    app.handle_child_recommendations()
