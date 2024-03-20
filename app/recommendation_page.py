@@ -34,10 +34,12 @@ def recommendations(df, cas_id):
             with title:
                 st.title(col['title'])
             
+            # so maybe we could add the positivity score for transparency? TODO
             with info:
                 st.markdown(f"**Category:** {col['category']}")
                 st.markdown(f"**Tags:** {col['tags']}")
                 st.markdown(f"**Age Rating:** {col['age_rating']}")
+                st.markdown(f"**Sentiment Score:** {col['vader_polarity']}")
                 if cas_string != 'cas18':
                     st.markdown(f"**Child Appropriateness Score:** {round(col[cas_string], 3)}")
 

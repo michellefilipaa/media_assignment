@@ -52,7 +52,7 @@ class app:
         # Value = Positivity
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
-        positivity = st.slider('', min_value=0, max_value=10, value=5)
+        positivity = st.slider('', min_value=-1, max_value=1, value=0.5) #the score is between -1 for very negative and 1 for very positive
 
         # Value = Collaboration
         st.markdown("**Who are you watching with?**")
