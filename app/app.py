@@ -6,7 +6,7 @@ import base64
 import pandas as pd
 import streamlit as st
 from values.ChildAppropriatenessScore import ChildAppropriatenessScore
-from values.recommender import recommender as r
+from values.FinalRecommender import FinalRecommender as r
 
 
 class app: 
