@@ -39,10 +39,6 @@ class ChildAppropriatenessScore:
             if start <= age <= end:
                 return cas_id
         return '18'
-    
-    def filter_polarity(self, df, polarity):
-        filtered_df =  df[df['vader_sentiment'] == polarity]
-        return filtered_df
 
     def make_recommendations(self, genre):
         df = self.get_dataframe_for_cas()

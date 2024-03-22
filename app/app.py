@@ -79,7 +79,7 @@ class app:
 
         # Value = Positivity
         if "polarity" not in st.session_state:
-            st.session_state.genre = "Neutral"
+            st.session_state.polarity = "Neutral"
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
         st.session_state.polarity = st.radio("Polarity:", ["Very Negative","Negative", "Neutral", "Positive", "Very Positive"])
@@ -149,7 +149,7 @@ class app:
 
         # Value = Positivity
         if "polarity" not in st.session_state:
-            st.session_state.genre = "Neutral"
+            st.session_state.polarity = "Neutral"
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
         st.session_state.polarity = st.radio("Polarity:", ["Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
@@ -163,7 +163,6 @@ class app:
         checkbox_states = []
         for checkbox in checkboxes:
             checkbox_states.append(st.checkbox(checkbox))
-        children = st.checkbox('Children')
 
         st.session_state.checked_checkboxes = [checkboxes[i] for i, state in enumerate(checkbox_states) if state]           
         
@@ -193,7 +192,6 @@ class app:
     @staticmethod
     def handle_search():
         st.title(st.session_state.person + "'s Search Profile")
-        st.session_state.genre = "Any"
 
         person = st.session_state.person
         if person is None:
@@ -202,6 +200,7 @@ class app:
 
         checkboxes = ['Asha', 'Michelle', 'Sine', 'Zane', 'Zang']
         if person == 'Asha':
+            checkboxes.remove('Asha')
             app.search_profile(checkboxes)
         elif person == 'Michelle':
             checkboxes.remove('Michelle')
