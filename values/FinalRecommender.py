@@ -74,4 +74,4 @@ class FinalRecommender:
         return df1
     
     def display_recommendations(self, df, cas_id):
-        rp.recommendations(df, cas_id, self.collaboration)
+        rp.recommendations(df, cas_id)

@@ -8,7 +8,7 @@ def generate_new_recommendations(df, cas_id):
         st.session_state.key += 1
         recommendations(new_df, cas_id) 
 
-def recommendations(df, cas_id, col):
+def recommendations(df, cas_id):
     cas_string = 'cas' + cas_id
 
     if len(df) == 0:

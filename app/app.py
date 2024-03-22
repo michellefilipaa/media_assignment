@@ -21,11 +21,11 @@ class app:
         }
 
         profile_description = {
-            "Asha" : "insert description of profile/user character",
-            "Michelle" : "This is a child profile. Only child appropriate content is recommended here.",
-            "Sine" : "insert description of profile/user character",
-            "Zane" : "insert description of profile/user character",
-            "Zang" : "insert description of profile/user character"
+            "Asha" : "Asha is an avid sports fan.",
+            "Michelle" : "Michelle is a child. She only gets to watch certain content.",
+            "Sine" : "Sine enjoys wildlife documentaries and good old fashioned movies.",
+            "Zane" : "Zane enjoys documentaries and sports.",
+            "Zang" : "Zang loves a good comedy and wildlife documentaries."
         }
 
         cols = st.columns(5)
@@ -89,7 +89,7 @@ class app:
         st.markdown("Leave empty if you're watching alone.")
 
         # Value = Transparency
-        st.markdown("This is used to make recommendations based on all your interests!") #TODO
+        st.markdown("This is used to make recommendations based on all your interests!") 
         checkbox_states = []
         for checkbox in checkboxes:
             checkbox_states.append(st.checkbox(checkbox))
@@ -112,7 +112,8 @@ class app:
     def search_child_profile(checkboxes):
         # Value = (Restricted) Access
         st.markdown("**How old are you?**")
-        st.markdown("insert transparency explanation") # TODO
+        # Value = Transparency
+        st.markdown("This is used to make sure we recommend the right content.") # TODO
         st.session_state.age = st.slider('Select age:', min_value=4, max_value=17, value=5)
 
         images = {
@@ -152,7 +153,7 @@ class app:
             st.session_state.polarity = "Neutral"
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
-        st.session_state.polarity = st.radio("Polarity:", ["Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
+        st.session_state.polarity = st.radio("Polarity:", ["Neutral", "Positive", "Very Positive"])
 
         # Value = Collaboration
         st.markdown("**Who are you watching with?**")
