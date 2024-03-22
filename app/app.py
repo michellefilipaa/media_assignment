@@ -10,7 +10,6 @@ from values.FinalRecommender import FinalRecommender as r
 
 
 class app: 
-
     @staticmethod
     def home_page():
         st.markdown("<h1 style='text-align: center; color: black;'>Select your profile</h1>", unsafe_allow_html=True)
@@ -216,7 +215,6 @@ class app:
             app.search_profile(checkboxes)
 
 streamlit_app = app()
-st.session_state.genre = "Any"
 st.session_state.key = 0
 st.session_state.all_data = pd.read_csv('../data/all_data.csv')
 
