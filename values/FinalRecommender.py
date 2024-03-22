@@ -10,6 +10,7 @@ import pandas as pd
 import string
 import recommendation_page as rp
 import streamlit as st
+import values.SimilarRecommendations as sr
 
 class FinalRecommender:
     """
@@ -28,7 +29,12 @@ class FinalRecommender:
             self.cas_instance = cas.ChildAppropriatenessScore(age, genre, False, None)
             df, cas_id = self.access()
         else:
-            df = pd.read_csv('../data/all_data.csv')
+            # This is used to make a sorted list in terms of similarity to each users top rated show.
+            # This attempts to provide the user with content they are actually interested in, rather than
+            # an arbitrary movie in the data frame.
+            ratings = pd.read_csv('../data/ratings/' + (st.session_state.person).lower() + '_ratings.csv')
+            highest_rated_row = ratings[ratings['rating']==ratings['rating'].max()]
+            df = sr.recommend_movies(highest_rated_row['showId'].iloc[0])
 
         if not self.collaboration:
             collab_df = None
