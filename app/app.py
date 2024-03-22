@@ -191,13 +191,6 @@ class app:
         app.user_home('Zang')
     
     @staticmethod
-    def handle_child_recommendations():
-        st.title("Child Recommendations")
-        age = st.session_state.age
-        genre = st.session_state.genre
-        cas = ChildAppropriatenessScore(age, genre, False, None)
-    
-    @staticmethod
     def handle_search():
         st.title(st.session_state.person + "'s Search Profile")
         st.session_state.genre = "Any"
