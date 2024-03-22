@@ -5,9 +5,7 @@ sys.path.append(parent_dir)
 import base64
 import pandas as pd
 import streamlit as st
-from values.ChildAppropriatenessScore import ChildAppropriatenessScore
-from values.FinalRecommender import FinalRecommender as r
-
+import values.FinalRecommender as r
 
 class app: 
     @staticmethod
@@ -74,13 +72,17 @@ class app:
     @staticmethod
     def search_profile(checkboxes):
         # choose a genre
+        if "genre" not in st.session_state:
+            st.session_state.genre = "Any"
         st.markdown("**Do you have a genre in mind?**")
         st.session_state.genre = st.radio("Genres:", ["Any","CBBC", "Comedy", "Documentary", "Entertainment", "Films", "History", "Science", "Signed", "Sports"])
 
         # Value = Positivity
+        if "polarity" not in st.session_state:
+            st.session_state.genre = "Neutral"
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
-        positivity = st.slider('', min_value=0, max_value=10, value=5)
+        st.session_state.polarity = st.radio("Polarity:", ["Very Negative","Negative", "Neutral", "Positive", "Very Positive"])
 
         # Value = Collaboration
         st.markdown("**Who are you watching with?**")
@@ -88,10 +90,12 @@ class app:
 
         # Value = Transparency
         st.markdown("This is used to make recommendations based on all your interests!") #TODO
+        checkbox_states = []
         for checkbox in checkboxes:
-            st.checkbox(checkbox)
+            checkbox_states.append(st.checkbox(checkbox))
         children = st.checkbox('Children')
 
+        st.session_state.checked_checkboxes = [checkboxes[i] for i, state in enumerate(checkbox_states) if state]
         # Value = (Restricted) Access
         if children: 
             st.markdown("**Age of Children**")
@@ -109,8 +113,7 @@ class app:
         # Value = (Restricted) Access
         st.markdown("**How old are you?**")
         st.markdown("insert transparency explanation") # TODO
-        age = st.slider('Select age:', min_value=4, max_value=17, value=5)
-        st.session_state.age = age
+        st.session_state.age = st.slider('Select age:', min_value=4, max_value=17, value=5)
 
         images = {
             "CBBC" : "images/kid_profile/cbbc.png",
@@ -125,16 +128,17 @@ class app:
         }
         
         # choose a genre
-        #st.session_state.genre = "Any"
+        if "genre" not in st.session_state:
+            st.session_state.genre = "Any"
         st.markdown("**Do you have a genre in mind?**")
         cols = st.columns(3)
 
         for idx, (genre, img_path) in enumerate(images.items()):
             row = idx // 3  # Calculate row index
             col = idx % 3   # Calculate column index
-            if age < 9 and genre in ["From the Archives", "Comedy"]:
+            if st.session_state.age < 9 and genre in ["From the Archives", "Comedy"]:
                 continue  # Skip these genres if age < 9
-            elif age < 12 and genre == "Comedy":
+            elif st.session_state.age < 12 and genre == "Comedy":
                 continue  # Skip "comedy" genre if age < 12
             with cols[col]:
                 st.image(img_path, use_column_width=True)
@@ -143,11 +147,12 @@ class app:
         
         st.markdown("**Selected Genre:** " + st.session_state.genre)
 
-
         # Value = Positivity
+        if "polarity" not in st.session_state:
+            st.session_state.genre = "Neutral"
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
-        positivity = st.slider('', min_value=0, max_value=10, value=5)
+        st.session_state.polarity = st.radio("Polarity:", ["Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
 
         # Value = Collaboration
         st.markdown("**Who are you watching with?**")
@@ -155,8 +160,12 @@ class app:
 
         # Value = Transparency
         st.markdown("This is used to make recommendations based on all your interests!") #TODO
+        checkbox_states = []
         for checkbox in checkboxes:
-            st.checkbox(checkbox)            
+            checkbox_states.append(st.checkbox(checkbox))
+        children = st.checkbox('Children')
+
+        st.session_state.checked_checkboxes = [checkboxes[i] for i, state in enumerate(checkbox_states) if state]           
         
         if st.button("Next"):
             st.session_state.page = "child_recommendations"
@@ -228,6 +237,14 @@ elif st.session_state.page in "user_home":
 elif st.session_state.page == "search":
     app.handle_search()
 elif st.session_state.page == "recommendations":
-    r.generate_recommendations()
+    age = st.session_state.age if "age" in st.session_state else 18
+    genre = st.session_state.genre
+    polarity = st.session_state.polarity
+    collaboration = st.session_state.checked_checkboxes
+    recommender = r.FinalRecommender(genre, polarity, collaboration, age)
 elif st.session_state.page == "child_recommendations":
-    app.handle_child_recommendations()
+    age = st.session_state.age
+    genre = st.session_state.genre
+    polarity = st.session_state.polarity
+    collaboration = st.session_state.checked_checkboxes
+    recommender = r.FinalRecommender(genre, polarity, collaboration, age)

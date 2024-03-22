@@ -23,6 +23,7 @@ def recommendations(df, cas_id):
             st.markdown(f"**Tags:** {row['tags']}")
             st.markdown(f"**Age Rating:** {row['age_rating']}")
             st.markdown(f"**Child Appropriateness Score:** {round(row[cas_string], 3)}")
+            st.markdown(f"**Sentiment Score:** {col['vader_polarity']}")
 
         # Display movie description
         with description:
