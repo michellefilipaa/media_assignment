@@ -52,7 +52,8 @@ class app:
         # Value = Positivity
         st.markdown("**Positivity Level:**")
         st.markdown("What mood are you in? How positive would you like the recommendations content to be?")
-        positivity = st.slider('', min_value=-1, max_value=1, value=0.5) #the score is between -1 for very negative and 1 for very positive
+        #positivity = st.slider('', min_value=-1, max_value=1, value=0.5) #the score is between -1 for very negative and 1 for very positive
+        st.session_state.polarity = st.radio("Polarity:", ["Very Negative","Negative", "Neutral", "Positive", "Very Positive"])
 
         # Value = Collaboration
         st.markdown("**Who are you watching with?**")
@@ -185,4 +186,5 @@ elif st.session_state.page == "recommendations":
 elif st.session_state.page == "child_recommendations":
     age = st.session_state.age
     genre = st.session_state.genre
+    polarity = st.session_state.polarity
     cas = ChildAppropriatenessScore(age, genre, False, None)

@@ -39,7 +39,7 @@ def recommendations(df, cas_id):
                 st.markdown(f"**Category:** {col['category']}")
                 st.markdown(f"**Tags:** {col['tags']}")
                 st.markdown(f"**Age Rating:** {col['age_rating']}")
-                st.markdown(f"**Sentiment Score:** {col['vader_polarity']}")
+                st.markdown(f"**Sentiment Score:** {col['vader_sentiment']}")
                 if cas_string != 'cas18':
                     st.markdown(f"**Child Appropriateness Score:** {round(col[cas_string], 3)}")
 

@@ -49,5 +49,9 @@ class ChildAppropriatenessScore:
         filtered_df =  df[df['category'] == genre]
         self.make_recommendations(filtered_df)
     
+    def filter_polarity(self, df, polarity):
+        filtered_df =  df[df['vader_sentiment'] == polarity]
+        self.make_recommendations(filtered_df)
+
     def make_recommendations(self, df):
         rp.recommendations(df, self.cas_id)
