@@ -10,6 +10,7 @@ import pandas as pd
 import string
 import recommendation_page as rp
 import streamlit as st
+import numpy as np
 
 class FinalRecommender:
     """
@@ -37,7 +38,8 @@ class FinalRecommender:
         
         polarity_df = self.filter_polarity_and_genre(df)
         final_df = self.combine(df, polarity_df, collab_df)
-        self.display_recommendations(final_df, cas_id)
+        final_df, best = self.fairness(final_df)
+        self.display_recommendations(final_df, cas_id, best)
 
     def collab(self):
         file_name = "../data/recommendations/collaboration_" + (st.session_state.person).lower()
@@ -57,10 +59,9 @@ class FinalRecommender:
         top10 = recommendations.head(10)  # Select the first 10 entries
         total_recommendations = len(top10)
 
-
         nonMinority_ratio = top10['representation'].eq(1).sum() / total_recommendations
         minority_ratio = top10['representation'].eq(2).sum() / total_recommendations
-        # Na items are mixed sport teams and other mixed stuff (cartoons)
+        # NA items are mixed sport teams and other mixed stuff (cartoons)
         mixed_ratio = (top10['representation'].eq(3).sum() + top10['representation'].isna().sum()) / total_recommendations
 
         #print(nonMinority_ratio, minority_ratio, mixed_ratio)
@@ -72,13 +73,12 @@ class FinalRecommender:
         intermediate_scores = np.abs(np.array([nonMinority_ratio, minority_ratio, mixed_ratio]) - target_distribution)
         print(intermediate_scores)
 
+        found_better = True
         # Fairness score of the current top 10 recommendation
         overall_fairness_score = 1 - np.max(intermediate_scores)
         print(overall_fairness_score)
 
-        
-        
-        
+    
         # Check if fairness score is less than 0.5, if not make a better/more fair recommendation
         if overall_fairness_score < 0.5:
             found_better = False
@@ -120,11 +120,9 @@ class FinalRecommender:
                     break
 
                 # If no better recommendation is found, return the "unfair" recommendation
-                if not found_better:
-                    print("no better found")
 
         print("Final overall fairness score:", overall_fairness_score)
-        return top10
+        return top10, found_better
     
     def filter_polarity_and_genre(self, df):
         if self.genre != 'Any':
@@ -141,5 +139,5 @@ class FinalRecommender:
         
         return df1
     
-    def display_recommendations(self, df, cas_id):
-        rp.recommendations(df, cas_id)
+    def display_recommendations(self, df, cas_id, best):
+        rp.recommendations(df, cas_id, best)
