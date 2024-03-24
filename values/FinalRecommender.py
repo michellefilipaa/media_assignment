@@ -45,11 +45,15 @@ class FinalRecommender:
         self.display_recommendations(final_df, cas_id, best)
 
     def collab(self):
-        file_name = "../data/recommendations/collaboration_" + (st.session_state.person).lower()
+        file_name = "../data/recommendations/collaboration/"
+        self.collaboration.append(st.session_state.person)
         if self.collaboration: 
-            file_name += "".join(item.lower() for item in self.collaboration)
+            sorted_collaboration = sorted(self.collaboration, key=str.lower)
+            file_name += "_".join(item.lower() for item in sorted_collaboration)
             file_name += ".csv"
+
             if os.path.exists(file_name):
+                
                 return pd.read_csv(file_name)
             else:
                 return pd.DataFrame(columns=['title'])

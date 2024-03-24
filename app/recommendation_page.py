@@ -1,7 +1,8 @@
 import streamlit as st
 import time
 
-st.session_state.generate_new = False
+if 'generate_new' not in st.session_state:
+    st.session_state.generate_new = False
 
 def generate_new_recommendations(df, cas_id):
         new_df = df.sample(n=10)
@@ -18,6 +19,7 @@ def recommendations(df, cas_id, best):
 
         if st.button("Back to home", key='back2_' + str(st.session_state.key)):
             st.session_state.page = "first_page"
+            st.session_state.generate_new = False  
     
     else:
         st.title("Top Recommendations")
@@ -53,6 +55,8 @@ def recommendations(df, cas_id, best):
 
         if st.button("Back to home", key= "back"+ str(st.session_state.key)):
             st.session_state.page = "first_page"
+            st.session_state.generate_new = False  
+    
         # This is done because sometimes (on the child's profile), there are less than 10 movies in a genre.
         # In this scenario, more recommendations would not be able to be made.
         if len(df) > 10:
