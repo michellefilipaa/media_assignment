@@ -28,7 +28,10 @@ class FinalRecommender:
             self.cas_instance = cas.ChildAppropriatenessScore(age, genre, False, None)
             df, cas_id = self.access()
         else:
-            df = pd.read_csv('../data/all_data.csv')
+            # This is used to make a sorted list in terms of similarity to each users top rated show.
+            # This attempts to provide the user with content they are actually interested in, rather than
+            # an arbitrary movie in the data frame.
+            df = pd.read_csv('../data/' + st.session_state.person.lower() + '_sorted_data.csv')
 
         if not self.collaboration:
             collab_df = None
