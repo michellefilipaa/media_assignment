@@ -41,6 +41,7 @@ class FinalRecommender:
         
         polarity_df = self.filter_polarity_and_genre(df)
         final_df = self.combine(df, polarity_df, collab_df)
+        
         final_df, best = self.fairness(final_df)
         self.display_recommendations(final_df, cas_id, best)
 
@@ -63,6 +64,8 @@ class FinalRecommender:
         return self.cas_instance.make_recommendations(self.genre)
 
     def fairness(self, recommendations):
+        if recommendations.empty:
+            return pd.DataFrame(), False
         top10 = recommendations.head(10)  # Select the first 10 entries
         total_recommendations = len(top10)
 
