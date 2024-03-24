@@ -8,7 +8,7 @@ def generate_new_recommendations(df, cas_id):
         st.session_state.key += 1
         recommendations(new_df, cas_id) 
 
-def recommendations(df, cas_id):
+def recommendations(df, cas_id, best):
     cas_string = 'cas' + cas_id
 
     if len(df) == 0:
@@ -21,6 +21,8 @@ def recommendations(df, cas_id):
     
     else:
         st.title("Top Recommendations")
+        if not best:
+            st.markdown("We were unable to provide a set of recommendations with a diverse representation due to sample size.")
 
         for i, col in df.head(10).iterrows():
             st.write('---')
