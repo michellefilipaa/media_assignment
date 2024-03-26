@@ -99,7 +99,7 @@ class app:
         # Value = (Restricted) Access
         if children: 
             st.markdown("**Age of Children**")
-            st.markdown("insert transparency explanation") # TODO
+            st.markdown("This is used to ensure the content is suitable for a child of their age.")
             st.session_state.age = st.slider('Select age of child', min_value=4, max_value=17, value=5)
         
         if st.button("Next"):
@@ -113,7 +113,7 @@ class app:
         # Value = (Restricted) Access
         st.markdown("**How old are you?**")
         # Value = Transparency
-        st.markdown("This is used to make sure we recommend the right content.") # TODO
+        st.markdown("This is used to make sure we recommend the right content.") 
         st.session_state.age = st.slider('Select age:', min_value=4, max_value=17, value=5)
 
         images = {
@@ -160,7 +160,7 @@ class app:
         st.markdown("Leave empty if you're watching alone.")
 
         # Value = Transparency
-        st.markdown("This is used to make recommendations based on all your interests!") #TODO
+        st.markdown("This is used to make recommendations based on all your interests!") 
         checkbox_states = []
         for checkbox in checkboxes:
             checkbox_states.append(st.checkbox(checkbox))
