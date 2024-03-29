@@ -1,7 +1,7 @@
 # Recommendation System
 
 ## Description
-This repository demonstrates the functionality of a recommender system with 5 governing values: (Safe) Access, Positivity, Collaboration, Fairness and Transparency.
+This repository demonstrates the functionality of a recommender system with 5 governing values: (Safe) Access, Positivity, Community, Fairness and Transparency.
 
 ## Getting Started
 ### Dependencies
@@ -18,7 +18,7 @@ Asha de Meij 8085412 <br>
 Michelle Lear 1966510 <br>
 Sine Bijsterveld 6756123 <br>
 Zane Budlong 4514653 <br>
-Zang Tran std_no <br>
+Zang Tran 4671554 <br>
 
 
 
