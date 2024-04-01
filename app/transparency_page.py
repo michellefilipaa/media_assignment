@@ -24,7 +24,7 @@ def transparency_explanations():
 
     st.title("Methods and Values")
 
-    with st.expander("**Child Appropriateness Scores**"):
+    with st.expander("**(Safe) Access**"):
         with open('../data/explanations/child_appropriateness.txt', 'r') as file:
             cas = file.read()
         st.markdown(cas)
