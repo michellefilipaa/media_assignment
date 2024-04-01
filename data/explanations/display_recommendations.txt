@@ -1,0 +1,10 @@
+Displaying the recommendations is crucial for how you the user makes a choice. 
+
+An interface known as Streamlit will be responsible for user interaction and the visual display of recommendations. 
+
+Users will be able to make choices that allow for safe access, collaboration, and positivity within the recommendations being generated. 
+
+They interface will initially display episodes for the user that include most recently watches and highest rated. 
+It will then all the user to like to make the decision if they would like other recommendations, if the user decides to proceed they will be able to specify their user profile and makes decisions such as choosing a genre, a positivity level (ordinal 1-10), 
+and if any who the user is going to watch with.
+A new set of recommendations will then be displayed for the user. 

@@ -1,0 +1,14 @@
+The sentiment_analysis method returns the label and the confidence/accuracy of the classification for the description of each episode.
+If the classification is positive the method will return the accuracy score. If it is negative it will return the negative of the score. 
+
+Specific content within the synopsis that could be potentially inappropriate for children is searched for and assessed through a term frequency matrix, indicating the portion of the unsuitable terms present within the description.
+The same terms will be used for all age groups but the final weighting will be different.
+The attributes 'rating_description_score', 'synopsis_nostopwords', 'unsuitable_ratio', 'unsuitable_ratio2' are added to the data frame.
+
+A score is assigned based on the rating. The numerical value represents the proportion of children aged between 4 and 17 that can safely view the content. 
+
+The mappings are given as follows:
+
+'U': 1, 'PG': 0.71, '12': 0.57, '12A': 0.57, '15':0.21, '18': 0.0
+
+The child appropriateness score is computed using the following equation: 

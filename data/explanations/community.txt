@@ -1,0 +1,18 @@
+When implementing collaboration with the recommendation systems, the model considers rating from a various amount of users. It takes into account that ratings have been given by a user for specific episodes they have watched. 
+
+The model filters by using Jaccard Similarity, measuring the similarity between two given sets. It merges the viewing histories of group members into a single user profile. It then generates recommendations based on similar ranges of other users. 
+
+From a mathematical standpoint, the Jaccard Similarity can be represented by the equation and set operators: 
+
+JaccardSim(A,B)= ∣A∪B∣ / ∣A∩B∣
+
+where ∣A∪B∣ denotes the absolute value (number of values) of the union of the two sets
+and ∣A∩B∣ denotes the absolute value (number of values) of the intersection of the two sets
+
+
+Here it calculates the similarity between the set of 'showId' values of that user and the 'group_movies' set.
+
+If the similarity between users falls below a threshold of 0.1 and is not 0, the model identifies the symmetric difference between the sets and includes them in a set named 'new_content'.
+It restricts the number of similar users taken into account to 15.
+
+Here we are left with the data frame 'df_recommendation' that holds these unique recommendations.

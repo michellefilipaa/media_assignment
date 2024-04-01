@@ -1,5 +1,4 @@
 import streamlit as st
-import time
 
 if 'generate_new' not in st.session_state:
     st.session_state.generate_new = False
@@ -11,6 +10,11 @@ def generate_new_recommendations(df, cas_id):
 
 def recommendations(df, cas_id, best):
     cas_string = 'cas' + cas_id
+    
+    st.markdown("Click on the button below if you would like to know more about how recommendations are made.")
+    if st.button("Transparency Info.", key= "transparency"+ str(st.session_state.key)):
+            st.session_state.page = "transparency_page"
+            st.session_state.generate_new = False 
 
     if len(df) == 0:
         st.title("No results found")
@@ -37,8 +41,7 @@ def recommendations(df, cas_id, best):
 
             with title:
                 st.title(col['title'])
-            
-            # so maybe we could add the positivity score for transparency? TODO
+
             with info:
                 st.markdown(f"**Category:** {col['category']}")
                 st.markdown(f"**Tags:** {col['tags']}")
@@ -46,7 +49,6 @@ def recommendations(df, cas_id, best):
                 st.markdown(f"**Sentiment Score:** {col['vader_sentiment']}")
                 if cas_string != 'cas18':
                     st.markdown(f"**Child Appropriateness Score:** {round(col[cas_string], 3)}")
-
             with description:
                 st.markdown("**Synopsis**")
                 st.markdown(col['description'])

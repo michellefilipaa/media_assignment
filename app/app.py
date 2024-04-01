@@ -6,6 +6,7 @@ import base64
 import pandas as pd
 import streamlit as st
 import values.FinalRecommender as r
+import transparency_page as tp
 
 class app: 
     @staticmethod
@@ -241,3 +242,5 @@ elif st.session_state.page == "child_recommendations":
     polarity = st.session_state.polarity
     collaboration = st.session_state.checked_checkboxes
     recommender = r.FinalRecommender(genre, polarity, collaboration, age)
+elif st.session_state.page == "transparency_page":
+    tp.transparency_explanations()

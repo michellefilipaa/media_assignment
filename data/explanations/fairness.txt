@@ -1,0 +1,6 @@
+The goal of incorporating the value of fairness with the design is to ensure equal opportunities for exposure regardless ethnicity of the characters involved. 
+Ensuring equal exposure opportunities for items is commonly referred to as individual item fairness. 
+
+First ratios are calculated that represent the ethnic composition. 
+
+The derivation is as follows: 

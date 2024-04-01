@@ -1,0 +1,53 @@
+Positivity was implemented in the design by using sentiment analysis. 
+The VADER model had been implemented within calculating a positivity score. 
+Our sentiment was calculated using the columns: title, synopsis_medium, description, and rating_description. 
+The output of the model lead to an extra column which states if the content is very negative, negative, neutral, positive, or very positive. 
+
+The mathematical representation of how VADER calculates a score is as follows:
+
+Sentiment_i = n_Summation_i=1 (w_i * s_i)
+
+where: 
+
+Sentiment_i: sentiment score 
+n: number of words in the text
+wi: sentiment intensity of word i
+si: the increment of the sentiment score of word i
+
+In order to use the data to operationalize positivity, TF-IDF and cosine similarity are used.
+
+TF-IDF (Term Frequency-Inverse Document Frequency) to vectorize features is a method for measuring and evaluating the importance or weight of a given word in a document relative to other documents in a corpus 
+(here the combination of the category, show, and description for the data sets make up the documents). 
+Simply put, it is the process of converting text into numerical format represented in a matrix that is suitable for machine learning algorithms. 
+
+Standard preprocessing is implemented, that is the text is converted to unicode, lowercase, and stopwords (English) are removed.
+
+The TF-IDF values are scores that are found by multiplying a given words term frequency (TF) - number of times the word occurs in a given document with the inverse document frequency (IDF) - proportion of documents in the corpus that contains the word. 
+
+The mathematical equations are given by:
+
+• TF(t, d) = number of times term appears in document d/ total number of terms in document d
+
+• IDF(t, n) = log(total number of documents in corpus n/ number of documents containing term t)
+
+• TF-IDF(t, d, n) = TF(t, d) * IDF(t, n)
+
+The rows of the matrix represent the description and each column represents a unique word in the corpus. 
+Hence the matrix is sparse. Each score indicates the importance of a word in a document relative to all of the other documents. 
+A high score indicates the word is not common in other documents while a low score indicates the word is common in other documents. 
+
+
+The cosine similarity is one way to mathematically evaluation the similarity between the shows based on their vectorized features. 
+It measures the the similarity of two document vectors (found using TD-IDF) of an inner product space. 
+The inner product space here is the the possible space (finite dimensional) for vector operations on a set of vectors, together with the dot product (the sum of products of the vectors corresponding components).
+Here we are working in a real vector space. 
+
+The cosine similarity of two documents, A and B respectively is given by the following mathematical equation:
+
+• sim(A,B) = cos(theta) = (A•B)/(||A||||B||) 
+
+where (A•B) denotes the dot product - the scalar of components
+and ||x|| denotes the vector norm - the magnitude or size of a vector.
+
+The calculation will provide cosine of the angle in which two document vectors are in the inner product space. 
+A cosine similarity of 1 indicates that the documents are similar, 0 indicates that the documents are orthogonal, and -1 indicates the documents are dissimilar. 

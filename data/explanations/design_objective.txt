@@ -1,0 +1,9 @@
+The goal of this recommendation system is to generate recommendations based on a set of (public) values that are implemented in the design of the system. The values include: (safe) access, positivity, collaboration, transparency and fairness.
+The goal is to give you a positive and diverse user experience to give you the option to how understand the methods and mathematics behind the recommendation that are presented.
+
+
+We are also hopeful that by providing you with these values give you more trust and confidence in the recommendations provided, leading to improved user satisfaction and engagement. 
+The systems aims to explore and propose strategies for seamlessly incorporating these values while recognizing the trade-offs inherent in the process. 
+By doing so, the objective is to ensure that RS not only provide personalized recommendations but also adhere to ethical standards and contribute to societal well-being. 
+
+Refer to all 'transparency' scripts below to gain a new insight to the recommendations.

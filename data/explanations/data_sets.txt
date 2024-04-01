@@ -1,0 +1,21 @@
+The data frame represents text and numeric data collected from the original data set given by public broadcast network BBC.
+
+The original features include:
+- 'category': represents the genre 
+- 'title': the name of the episode of that show
+- 'tags': key descriptive terms
+- 'age_rating': the assigned audience rating 
+- 'rating_description': a description to justify the age_rating
+- 'description': a brief description of the episode
+- 'representation': 
+- 'duration_txt': gives the duration of the episode in minutes
+- 'duration_sec': gives the duration of the episode in seconds
+- 'first_broadcast': gives the time/date in which the episode aired
+- 'synopsis_medium': a brief description of the episode
+- 'image': a URL to an image of the episode
+- 'showId': unique identifier for the episode
+
+This 'synopsis' is either of the text columns 'synopsis_small', 'synopsis_medium', and 'synopsis_large' depending on if a description is null or not. And then 'synopsis_large' and 'synopsis_small' were dropped. 
+These columns were concatenated to create a viable description for each episode.
+
+The original data sets are content data from BBC (British Broadcasting Corporation) a British public broadcasting television network.

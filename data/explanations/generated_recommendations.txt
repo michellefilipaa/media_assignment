@@ -1,0 +1,7 @@
+To understand how the recommendations are generated it is important to understand the functions that ultimately determine a recommendation. 
+The recommendation system will consider a user and display recommendations in the form of episodes that may be of interest to you the user. 
+
+The values access, collaboration, and positivity are values that are backed mathematical functions that responsible for providing the recommended episodes. 
+As each user is unique, a different values contain weight which is used to determine how diverse the recommendations presented will be. 
+
+A class is created to serve as means for generating recommendations that considers age, positivity, and collaboration and ensures fairness:
